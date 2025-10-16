@@ -51,8 +51,8 @@ export default function TodoForm({ onSubmit, onCancel }: TodoFormProps) {
     <form onSubmit={handleSubmit} className="p-8 w-full box-border">
       {/* ヘッダー */}
       <div className="mb-6">
-        <h2 className="text-3xl font-bold text-gray-900">新しいTodo</h2>
-        <p className="text-sm text-gray-500 mt-1">タスクの詳細を入力してください</p>
+        <h2 className="text-3xl font-bold text-gray-900">新しいスケジュール</h2>
+        <p className="text-sm text-gray-500 mt-1">スケジュールの詳細を入力してください</p>
       </div>
 
       {/* タイトル */}

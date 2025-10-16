@@ -77,14 +77,14 @@ function App() {
         {/* ヘッダー */}
         <header className="text-center mb-12">
           <h1 className="text-5xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-3">
-            Todo アプリ
+            スケジュール管理
           </h1>
           <p className="text-gray-600 text-lg">
             開始・終了時間の10分前に通知が届きます ✨
           </p>
         </header>
 
-        {/* Todo一覧 */}
+        {/* スケジュール一覧 */}
         <TodoList
           todos={todos}
           onToggleComplete={handleToggleComplete}

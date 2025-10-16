@@ -68,9 +68,9 @@ export default function TodoList({ todos, onToggleComplete, onDelete }: TodoList
   if (todos.length === 0) {
     return (
       <div className="bg-white/70 backdrop-blur-sm p-16 rounded-3xl shadow-lg text-center border border-gray-100">
-        <div className="text-6xl mb-4">📝</div>
-        <p className="text-gray-600 text-xl font-semibold mb-2">まだTodoがありません</p>
-        <p className="text-gray-400 text-sm">右下の + ボタンから新しいTodoを追加してみましょう</p>
+        <div className="text-6xl mb-4">📅</div>
+        <p className="text-gray-600 text-xl font-semibold mb-2">まだスケジュールがありません</p>
+        <p className="text-gray-400 text-sm">右下の + ボタンから新しいスケジュールを追加してみましょう</p>
       </div>
     );
   }
@@ -78,7 +78,7 @@ export default function TodoList({ todos, onToggleComplete, onDelete }: TodoList
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-3xl font-bold text-gray-800">Todo一覧</h2>
+        <h2 className="text-3xl font-bold text-gray-800">スケジュール一覧</h2>
         <span className="text-sm text-gray-500 bg-white/60 backdrop-blur-sm px-4 py-2 rounded-full">
           {todos.filter(t => !t.completed).length} / {todos.length} 件
         </span>

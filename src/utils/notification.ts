@@ -81,7 +81,7 @@ export const showNotification = (title: string, body: string) => {
 };
 
 /**
- * 10分前通知が必要なTodoをチェックして通知
+ * 10分前通知が必要なスケジュールをチェックして通知
  */
 export const checkAndNotify = () => {
   const todos = storage.getTodos();
@@ -101,7 +101,7 @@ export const checkAndNotify = () => {
         const remainingMinutes = Math.ceil((startDate.getTime() - now.getTime()) / (60 * 1000));
 
         showNotification(
-          '🚀 Todoの開始時間が近づいています',
+          '🚀 スケジュールの開始時間が近づいています',
           `「${todo.title}」の開始まであと${remainingMinutes}分です`
         );
 
@@ -118,7 +118,7 @@ export const checkAndNotify = () => {
         const remainingMinutes = Math.ceil((endDate.getTime() - now.getTime()) / (60 * 1000));
 
         showNotification(
-          '⏰ Todoの終了時間が近づいています',
+          '⏰ スケジュールの終了時間が近づいています',
           `「${todo.title}」の終了まであと${remainingMinutes}分です`
         );
 

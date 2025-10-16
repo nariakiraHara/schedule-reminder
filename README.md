@@ -1,91 +1,67 @@
-# electron-vite-react
+# スケジュール管理アプリ
 
-[![awesome-vite](https://awesome.re/mentioned-badge.svg)](https://github.com/vitejs/awesome-vite)
-![GitHub stars](https://img.shields.io/github/stars/caoxiemeihao/vite-react-electron?color=fa6470)
-![GitHub issues](https://img.shields.io/github/issues/caoxiemeihao/vite-react-electron?color=d8b22d)
-![GitHub license](https://img.shields.io/github/license/caoxiemeihao/vite-react-electron)
-[![Required Node.JS >= 14.18.0 || >=16.0.0](https://img.shields.io/static/v1?label=node&message=14.18.0%20||%20%3E=16.0.0&logo=node.js&color=3f893e)](https://nodejs.org/about/releases)
+Electronを使用したデスクトップスケジュール管理アプリケーション
 
-English | [简体中文](README.zh-CN.md)
+## 特徴
 
-## 👀 Overview
+- 🚀 **開始・終了時間管理** - タスクの開始時間と終了時間（任意）を設定
+- ⏰ **10分前通知** - 開始・終了時間の10分前に音付き通知
+- 📱 **モダンなUI** - Tailwind CSSを使用した洗練されたデザイン
+- 💾 **ローカルストレージ** - データはローカルに安全に保存
+- ⚡ **リアルタイム更新** - 残り時間が1分ごとに自動更新
+- 🎨 **状態による色分け** - 緊急度に応じた視覚的なフィードバック
 
-📦 Ready out of the box  
-🎯 Based on the official [template-react-ts](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts), project structure will be familiar to you  
-🌱 Easily extendable and customizable  
-💪 Supports Node.js API in the renderer process  
-🔩 Supports C/C++ native addons  
-🐞 Debugger configuration included  
-🖥 Easy to implement multiple windows
+## 技術スタック
 
-## 🛫 Quick Setup
+- **Electron** - デスクトップアプリケーションフレームワーク
+- **React** - UIライブラリ
+- **TypeScript** - 型安全な開発
+- **Vite** - 高速ビルドツール
+- **Tailwind CSS** - ユーティリティファーストCSSフレームワーク
 
-```sh
-# clone the project
-git clone https://github.com/electron-vite/electron-vite-react.git
+## インストールと起動
 
-# enter the project directory
-cd electron-vite-react
-
-# install dependency
+```bash
+# 依存関係のインストール
 npm install
 
-# develop
+# 開発モード起動
 npm run dev
+
+# ビルド
+npm run build
 ```
 
-## 🐞 Debug
+## 使い方
 
-![electron-vite-react-debug.gif](/electron-vite-react-debug.gif)
+1. **スケジュール追加** - 右下の + ボタンをクリック
+2. **詳細入力** - タイトル、説明、開始時間、終了時間（任意）を入力
+3. **通知受信** - 開始・終了の10分前に自動通知
+4. **完了管理** - チェックボックスで完了/未完了を切り替え
+5. **削除** - ゴミ箱アイコンで不要なスケジュールを削除
 
-## 📂 Directory structure
+## 主な機能
 
-Familiar React application structure, just with `electron` folder on the top :wink:  
-_Files in this folder will be separated from your React application and built into `dist-electron`_
+### スケジュール管理
+- スケジュールの追加・削除・完了管理
+- 開始時間と終了時間の設定（終了時間は任意）
+- 説明欄でタスクの詳細を記録
 
-```tree
-├── electron                                 Electron-related code
-│   ├── main                                 Main-process source code
-│   └── preload                              Preload-scripts source code
-│
-├── release                                  Generated after production build, contains executables
-│   └── {version}
-│       ├── {os}-{os_arch}                   Contains unpacked application executable
-│       └── {app_name}_{version}.{ext}       Installer for the application
-│
-├── public                                   Static assets
-└── src                                      Renderer source code, your React application
-```
+### 通知機能
+- 開始時間の10分前に通知（音付き）
+- 終了時間の10分前に通知（音付き）
+- デスクトップ通知とブラウザ通知に対応
 
-<!--
-## 🚨 Be aware
+### UI/UX
+- モーダルウィンドウでスケジュール追加
+- 緊急度に応じた色分け表示
+- リアルタイムで残り時間を更新
+- スムーズなアニメーション効果
 
-This template integrates Node.js API to the renderer process by default. If you want to follow **Electron Security Concerns** you might want to disable this feature. You will have to expose needed API by yourself.
+## ライセンス
 
-To get started, remove the option as shown below. This will [modify the Vite configuration and disable this feature](https://github.com/electron-vite/vite-plugin-electron-renderer#config-presets-opinionated).
+MIT
 
-```diff
-# vite.config.ts
+## 開発者
 
-export default {
-  plugins: [
-    ...
--   // Use Node.js API in the Renderer-process
--   renderer({
--     nodeIntegration: true,
--   }),
-    ...
-  ],
-}
-```
--->
-
-## 🔧 Additional features
-
-1. electron-updater 👉 [see docs](src/components/update/README.md)
-1. playwright
-
-## ❔ FAQ
-
-- [C/C++ addons, Node.js modules - Pre-Bundling](https://github.com/electron-vite/vite-plugin-electron-renderer#dependency-pre-bundling)
-- [dependencies vs devDependencies](https://github.com/electron-vite/vite-plugin-electron-renderer#dependencies-vs-devdependencies)
+このアプリケーションは Electron + Vite + React のテンプレートをベースに開発されました。

@@ -7,7 +7,7 @@ export default function FloatingActionButton({ onClick }: FloatingActionButtonPr
     <button
       onClick={onClick}
       className="fixed bottom-8 right-8 w-16 h-16 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-full shadow-2xl hover:shadow-indigo-500/50 hover:scale-110 transition-all duration-300 flex items-center justify-center z-40 group"
-      title="新しいTodoを追加"
+      title="新しいスケジュールを追加"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
