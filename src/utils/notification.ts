@@ -84,9 +84,12 @@ export const showNotification = (title: string, body: string) => {
  * 10分前通知が必要なスケジュールをチェックして通知
  */
 export const checkAndNotify = () => {
+  console.log('[通知チェック] 開始:', new Date().toLocaleTimeString());
   const todos = storage.getTodos();
   const now = new Date();
   const tenMinutesLater = new Date(now.getTime() + 10 * 60 * 1000);
+
+  console.log(`[通知チェック] スケジュール数: ${todos.length}`);
 
   todos.forEach(todo => {
     if (todo.completed) {
@@ -96,9 +99,14 @@ export const checkAndNotify = () => {
     // 開始時間の10分前通知をチェック
     if (!todo.notifiedStart) {
       const startDate = new Date(todo.startDate);
+      const diffMinutes = Math.ceil((startDate.getTime() - now.getTime()) / (60 * 1000));
+
+      console.log(`[開始通知チェック] "${todo.title}": 残り${diffMinutes}分, 通知済み: ${todo.notifiedStart}`);
 
       if (startDate <= tenMinutesLater && startDate > now) {
         const remainingMinutes = Math.ceil((startDate.getTime() - now.getTime()) / (60 * 1000));
+
+        console.log(`[開始通知] 通知を送信: "${todo.title}" (あと${remainingMinutes}分)`);
 
         showNotification(
           '🚀 スケジュールの開始時間が近づいています',
@@ -113,9 +121,14 @@ export const checkAndNotify = () => {
     // 終了時間の10分前通知をチェック（終了時間が設定されている場合のみ）
     if (todo.endDate && !todo.notifiedEnd) {
       const endDate = new Date(todo.endDate);
+      const diffMinutes = Math.ceil((endDate.getTime() - now.getTime()) / (60 * 1000));
+
+      console.log(`[終了通知チェック] "${todo.title}": 残り${diffMinutes}分, 通知済み: ${todo.notifiedEnd}`);
 
       if (endDate <= tenMinutesLater && endDate > now) {
         const remainingMinutes = Math.ceil((endDate.getTime() - now.getTime()) / (60 * 1000));
+
+        console.log(`[終了通知] 通知を送信: "${todo.title}" (あと${remainingMinutes}分)`);
 
         showNotification(
           '⏰ スケジュールの終了時間が近づいています',
