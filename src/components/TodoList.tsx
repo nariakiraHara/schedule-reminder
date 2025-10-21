@@ -20,8 +20,34 @@ export default function TodoList({ todos, onToggleComplete, onDelete }: TodoList
     return () => clearInterval(interval);
   }, []);
 
-  // 開始時間順にソート（近い順）
-  const sortedTodos = [...todos].sort((a, b) => {
+  // 完了済みで日付が変わったものを除外
+  const getTodayStart = (date: Date) => {
+    const today = new Date(date);
+    today.setHours(0, 0, 0, 0);
+    return today;
+  };
+
+  const filteredTodos = todos.filter((todo) => {
+    if (!todo.completed) {
+      return true; // 未完了は表示
+    }
+
+    // 完了済みの場合、終了時間または開始時間の日付が今日かチェック
+    const referenceDate = todo.endDate ? new Date(todo.endDate) : new Date(todo.startDate);
+    const referenceDateStart = getTodayStart(referenceDate);
+    const todayStart = getTodayStart(currentTime);
+
+    // 参照日付が今日か今日以降なら表示（日付が変わっていない）
+    return referenceDateStart.getTime() >= todayStart.getTime();
+  });
+
+  // ソート: 未完了を上に、その後開始時間順
+  const sortedTodos = [...filteredTodos].sort((a, b) => {
+    // 完了状態で並び替え（未完了が上）
+    if (a.completed !== b.completed) {
+      return a.completed ? 1 : -1;
+    }
+    // 同じ完了状態なら開始時間順
     return new Date(a.startDate).getTime() - new Date(b.startDate).getTime();
   });
 
@@ -65,12 +91,20 @@ export default function TodoList({ todos, onToggleComplete, onDelete }: TodoList
     };
   };
 
-  if (todos.length === 0) {
+  if (filteredTodos.length === 0) {
     return (
       <div className="bg-white/70 backdrop-blur-sm p-16 rounded-3xl shadow-lg text-center border border-gray-100">
         <div className="text-6xl mb-4">📅</div>
-        <p className="text-gray-600 text-xl font-semibold mb-2">まだスケジュールがありません</p>
-        <p className="text-gray-400 text-sm">右下の + ボタンから新しいスケジュールを追加してみましょう</p>
+        <p className="text-gray-600 text-xl font-semibold mb-2">
+          {todos.length === 0
+            ? 'まだスケジュールがありません'
+            : '表示できるスケジュールがありません'}
+        </p>
+        <p className="text-gray-400 text-sm">
+          {todos.length === 0
+            ? '右下の + ボタンから新しいスケジュールを追加してみましょう'
+            : '完了済みのスケジュールは日付が変わると非表示になります'}
+        </p>
       </div>
     );
   }
@@ -80,7 +114,7 @@ export default function TodoList({ todos, onToggleComplete, onDelete }: TodoList
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-3xl font-bold text-gray-800">スケジュール一覧</h2>
         <span className="text-sm text-gray-500 bg-white/60 backdrop-blur-sm px-4 py-2 rounded-full">
-          {todos.filter(t => !t.completed).length} / {todos.length} 件
+          {filteredTodos.filter(t => !t.completed).length} / {filteredTodos.length} 件
         </span>
       </div>
       {sortedTodos.map((todo) => {
