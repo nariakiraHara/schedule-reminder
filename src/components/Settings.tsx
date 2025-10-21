@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { NotificationSettings } from '../types/settings';
 import { settingsStorage } from '../utils/settings-storage';
+import { showNotification, requestNotificationPermission } from '../utils/notification';
 
 interface SettingsProps {
   onClose: () => void;
@@ -11,6 +12,7 @@ const Settings = ({ onClose }: SettingsProps) => {
     settingsStorage.getSettings()
   );
   const [isSaving, setIsSaving] = useState(false);
+  const [isTesting, setIsTesting] = useState(false);
 
   useEffect(() => {
     // 設定を読み込む
@@ -37,6 +39,36 @@ const Settings = ({ onClose }: SettingsProps) => {
     if (window.confirm('設定を初期値にリセットしますか?')) {
       settingsStorage.resetSettings();
       setSettings(settingsStorage.getSettings());
+    }
+  };
+
+  const handleTestNotification = async () => {
+    setIsTesting(true);
+
+    try {
+      // 通知の許可を確認
+      const permission = await requestNotificationPermission();
+
+      if (permission !== 'granted') {
+        alert('通知が許可されていません。ブラウザの設定から通知を許可してください。');
+        setIsTesting(false);
+        return;
+      }
+
+      // テスト通知を表示
+      showNotification(
+        '🔔 テスト通知',
+        `これはテスト通知です。実際の通知は${settings.notificationMinutes}分前に届きます。`
+      );
+
+      // フィードバック表示
+      setTimeout(() => {
+        setIsTesting(false);
+      }, 1000);
+    } catch (error) {
+      console.error('テスト通知の送信に失敗しました:', error);
+      alert('テスト通知の送信に失敗しました');
+      setIsTesting(false);
     }
   };
 
@@ -98,6 +130,38 @@ const Settings = ({ onClose }: SettingsProps) => {
               </p>
             </div>
           </div>
+        </div>
+
+        {/* 通知テストボタン */}
+        <div>
+          <label className="block text-sm font-semibold text-gray-700 mb-3">
+            通知のテスト
+          </label>
+          <button
+            onClick={handleTestNotification}
+            disabled={isTesting}
+            className="w-full bg-gradient-to-r from-green-500 to-emerald-500 text-white py-3 px-6 rounded-lg font-semibold hover:from-green-600 hover:to-emerald-600 transition-all duration-200 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+          >
+            {isTesting ? (
+              <>
+                <svg className="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                送信中...
+              </>
+            ) : (
+              <>
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                  <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z" />
+                </svg>
+                テスト通知を送信
+              </>
+            )}
+          </button>
+          <p className="text-xs text-gray-500 mt-2">
+            クリックすると実際の通知がどのように表示されるかテストできます
+          </p>
         </div>
 
         {/* ボタン */}

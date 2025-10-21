@@ -20,22 +20,34 @@ export default function TodoList({ todos, onToggleComplete, onDelete }: TodoList
     return () => clearInterval(interval);
   }, []);
 
-  // 完了済みで1日以上経過したものを除外
+  // 完了済みで日付が変わったものを除外
+  const getTodayStart = (date: Date) => {
+    const today = new Date(date);
+    today.setHours(0, 0, 0, 0);
+    return today;
+  };
+
   const filteredTodos = todos.filter((todo) => {
     if (!todo.completed) {
       return true; // 未完了は表示
     }
 
-    // 完了済みの場合、終了時間または開始時間から1日経過しているかチェック
+    // 完了済みの場合、終了時間または開始時間の日付が今日かチェック
     const referenceDate = todo.endDate ? new Date(todo.endDate) : new Date(todo.startDate);
-    const oneDayMs = 24 * 60 * 60 * 1000;
-    const timeSinceReference = currentTime.getTime() - referenceDate.getTime();
+    const referenceDateStart = getTodayStart(referenceDate);
+    const todayStart = getTodayStart(currentTime);
 
-    return timeSinceReference < oneDayMs; // 1日未満なら表示
+    // 参照日付が今日か今日以降なら表示（日付が変わっていない）
+    return referenceDateStart.getTime() >= todayStart.getTime();
   });
 
-  // 開始時間順にソート（近い順）
+  // ソート: 未完了を上に、その後開始時間順
   const sortedTodos = [...filteredTodos].sort((a, b) => {
+    // 完了状態で並び替え（未完了が上）
+    if (a.completed !== b.completed) {
+      return a.completed ? 1 : -1;
+    }
+    // 同じ完了状態なら開始時間順
     return new Date(a.startDate).getTime() - new Date(b.startDate).getTime();
   });
 
@@ -91,7 +103,7 @@ export default function TodoList({ todos, onToggleComplete, onDelete }: TodoList
         <p className="text-gray-400 text-sm">
           {todos.length === 0
             ? '右下の + ボタンから新しいスケジュールを追加してみましょう'
-            : '完了済みのスケジュールは1日後に非表示になります'}
+            : '完了済みのスケジュールは日付が変わると非表示になります'}
         </p>
       </div>
     );
